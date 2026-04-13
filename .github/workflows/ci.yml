@@ -1,0 +1,8 @@
+# added PR trigger
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
