@@ -9,7 +9,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  deploy:
+  simple_deployment_pipeline:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,12 +23,8 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Trigger Render deploy
-        if: ${{ github.event_name == 'push' }}
-        run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
-
   tag_release:
-    needs: [deploy]
+    needs: [simple_deployment_pipeline]
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     permissions:
