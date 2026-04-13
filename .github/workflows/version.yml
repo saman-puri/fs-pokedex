@@ -1,4 +1,4 @@
-name: Versioning 
+name: Deployment pipeline
 
 on:
   push:
@@ -22,10 +22,6 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Trigger Render deploy
-        if: ${{ github.event_name == 'push' }}
-        run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
 
   tag_release:
     needs: [simple_deployment_pipeline]
