@@ -9,7 +9,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  simple_deployment_pipeline:
+  build_and_test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,7 +31,7 @@ jobs:
         run: echo "${{ join(github.event.commits.*.message, ' | ') }}"
 
   tag_release:
-    needs: [simple_deployment_pipeline]
+    needs: [build_and_test]
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     runs-on: ubuntu-latest
     permissions:
@@ -71,7 +71,7 @@ jobs:
             Actor: `${{ github.actor }}`
 
   notify_failure:
-    needs: [simple_deployment_pipeline]
+    needs: [build_and_test]
     if: ${{ failure() }}
     runs-on: ubuntu-latest
     steps:
